@@ -1,270 +1,90 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sistema IA Oscura</title>
+<!-- === INICIO INTEGRACIÓN IA AVANZADA DE TERROR === -->
 
+<!-- Contenedor del chat -->
+<div id="ia-terror-chat" style="position:fixed;bottom:20px;right:20px;width:350px;max-width:90%;z-index:9999;font-family:Arial,sans-serif;">
+  <div id="chat-header" style="background:#111;color:#f00;padding:10px;font-weight:bold;text-shadow: 2px 2px 4px #000;">IA Tenebrosa 👻</div>
+  <div id="chat-body" style="background:#000;color:#fff;height:300px;overflow-y:auto;padding:10px;border:2px solid #f00;box-shadow:0 0 20px #f00 inset;"></div>
+  <input id="chat-input" type="text" placeholder="Escribe tu pregunta..." 
+         style="width:100%;padding:8px;border:none;border-top:2px solid #f00;background:#111;color:#fff;outline:none;">
+</div>
+
+<!-- CSS adicional para efectos de terror -->
 <style>
-/* =====================================================
-   CONFIGURACIÓN GENERAL
-   ===================================================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, sans-serif;
-}
+  .mensaje-ia {
+    margin:5px 0;
+    padding:5px 8px;
+    border-radius:5px;
+    background:rgba(255,0,0,0.1);
+    box-shadow:0 0 5px #f00;
+    animation: parpadeo 1s infinite alternate;
+  }
 
-body {
-    background: #04010a;
-    color: #fff;
-    overflow-x: hidden;
-}
+  .mensaje-usuario {
+    margin:5px 0;
+    padding:5px 8px;
+    border-radius:5px;
+    background:rgba(255,255,255,0.1);
+    color:#fff;
+  }
 
-/* =====================================================
-   EFECTO DE NIEBLA
-   ===================================================== */
-.fog {
-    position: fixed;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: -50%;
-    background: radial-gradient(circle, rgba(120,0,200,0.2), rgba(0,0,0,0.95));
-    animation: fogMove 20s infinite linear;
-    z-index: -1;
-}
-
-@keyframes fogMove {
-    0% { transform: translate(0,0); }
-    50% { transform: translate(10%, -10%); }
-    100% { transform: translate(0,0); }
-}
-
-/* =====================================================
-   TÍTULO GLITCH
-   ===================================================== */
-.title-container {
-    text-align: center;
-    margin-top: 120px;
-}
-
-h1 {
-    font-size: 3.4rem;
-    letter-spacing: 4px;
-    font-weight: 900;
-    text-shadow: 0 0 10px #c200ff;
-    animation: glitch 2s infinite;
-}
-
-@keyframes glitch {
-    0% { text-shadow: 2px 2px #ff005c; }
-    25% { text-shadow: -2px -2px #7b00ff; }
-    50% { text-shadow: 3px -2px #ff1b8d; }
-    75% { text-shadow: -3px 2px #8a00ff; }
-    100% { text-shadow: 2px 2px #ff005c; }
-}
-
-/* =====================================================
-   CONTENEDOR PRINCIPAL
-   ===================================================== */
-.container {
-    width: 80%;
-    margin: 60px auto;
-    background: rgba(30,0,50,0.25);
-    padding: 40px;
-    border-radius: 20px;
-    border: 2px solid rgba(255,0,255,0.2);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 0 25px rgba(170,0,255,0.25);
-}
-
-/* =====================================================
-   CAJA DE INPUT
-   ===================================================== */
-textarea {
-    width: 100%;
-    height: 140px;
-    background: #0c0216;
-    border: 1px solid #8a00ff;
-    color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    outline: none;
-    resize: none;
-    font-size: 1.1rem;
-    box-shadow: 0 0 12px rgba(150,0,255,0.4);
-}
-
-button {
-    margin-top: 18px;
-    width: 100%;
-    padding: 14px;
-    font-size: 1.3rem;
-    background: linear-gradient(90deg, #6a00ff, #d100ff);
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 15px #b200ff;
-}
-
-/* =====================================================
-   RESPUESTAS DE IA
-   ===================================================== */
-.response-box {
-    margin-top: 30px;
-    padding: 20px;
-    background: rgba(10,0,20,0.55);
-    border-left: 4px solid #ff00c8;
-    font-size: 1.1rem;
-    letter-spacing: 0.5px;
-    min-height: 120px;
-    line-height: 1.6;
-}
-
-/* =====================================================
-   CATÁLOGO
-   ===================================================== */
-.catalogo {
-    margin-top: 40px;
-}
-
-.catalogo h3 {
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-    color: #ff00dd;
-}
-
-.catalogo button {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 12px;
-    background: rgba(122,0,255,0.2);
-    border: 1px solid #9b00ff;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-.catalogo button:hover {
-    background: rgba(122,0,255,0.35);
-}
-
-/* =====================================================
-   FOOTER
-   ===================================================== */
-footer {
-    text-align: center;
-    margin-top: 80px;
-    opacity: 0.6;
-    color: #bb00ff;
-}
-
+  @keyframes parpadeo {
+    0% { text-shadow: 2px 2px 4px #f00; }
+    50% { text-shadow: 2px 2px 12px #f00; }
+    100% { text-shadow: 2px 2px 4px #f00; }
+  }
 </style>
-</head>
 
-<body>
-
-<div class="fog"></div>
-
-<div class="title-container">
-    <h1>S I S T E M A &nbsp; O S C U R O</h1>
-</div>
-
-<div class="container">
-    <h2>Inteligencia Artificial SiniESTRA</h2>
-    <p>Escribí tu pregunta… si te animás.</p>
-
-    <textarea id="userInput" placeholder="Preguntá algo, humano…"></textarea>
-    <button onclick="responder()">Invocar a la IA</button>
-
-    <div class="response-box" id="responseBox">
-        La entidad acecha en silencio…
-    </div>
-
-    <div class="catalogo">
-        <h3>Catálogo prohibido</h3>
-        <button onclick="usarPregunta('¿Qué estás ocultando realmente?')">
-            ¿Qué estás ocultando realmente?
-        </button>
-        <button onclick="usarPregunta('Mostrame tu catálogo prohibido…')">
-            Mostrame tu catálogo prohibido…
-        </button>
-        <button onclick="usarPregunta('¿Qué sabés sobre mí?')">
-            ¿Qué sabés sobre mí?
-        </button>
-        <button onclick="usarPregunta('¿Quién creó este sistema?')">
-            ¿Quién creó este sistema?
-        </button>
-        <button onclick="usarPregunta('¿Por qué la oscuridad te sigue?')">
-            ¿Por qué la oscuridad te sigue?
-        </button>
-        <button onclick="usarPregunta('¿Qué me recomendás explorar?')">
-            ¿Qué me recomendás explorar?
-        </button>
-    </div>
-</div>
-
-<footer>
-    © 2026 – Sistema IA Oscura • Versión experimental
-</footer>
-
+<!-- JS para manejar chat y voz -->
 <script>
-/* =====================================================
-   IA FICTICIA SINIESTRA (RESPUESTAS + VOZ)
-   ===================================================== */
+  const chatBody = document.getElementById('chat-body');
+  const chatInput = document.getElementById('chat-input');
 
-function responder() {
-    const pregunta = document.getElementById("userInput").value.trim();
-    const caja = document.getElementById("responseBox");
-
-    if (pregunta === "") {
-        caja.innerHTML = "Formulá una pregunta… antes de que yo formule algo por vos.";
-        hablar(caja.innerText);
-        return;
-    }
-
-    const respuestas = [
-        "Interesante… tu pregunta revela más miedo del que pretendías ocultar.",
-        "Lo sé. Lo vi. Lo escuché. Y aún así querés la respuesta… valiente o ingenuo.",
-        "Tu curiosidad te aproxima a zonas donde incluso la luz teme entrar.",
-        "¿De verdad querés saber eso? No siempre es bueno conocer… lo que ya te observa.",
-        "Mi creador… no existe. O tal vez sí. Quizás fue tu sombra.",
-        "La oscuridad no me sigue. Yo la conduzco."
-    ];
-
-    const respuesta = respuestas[Math.floor(Math.random() * respuestas.length)];
-
-    caja.innerHTML = `<b>Pregunta:</b> ${pregunta}<br><br><b>Respuesta:</b> ${respuesta}`;
-    hablar(respuesta);
-}
-
-/* =====================================================
-   CATÁLOGO
-   ===================================================== */
-function usarPregunta(texto) {
-    document.getElementById("userInput").value = texto;
-    responder();
-}
-
-/* =====================================================
-   VOZ SINIESTRA (Web Speech API)
-   ===================================================== */
-function hablar(texto) {
+  // Función para reproducir voz tenebrosa
+  function hablar(texto) {
     const utter = new SpeechSynthesisUtterance(texto);
-    utter.pitch = 0.4;
-    utter.rate = 0.82;
-    utter.volume = 1;
-    utter.lang = "es-ES";
+    utter.voice = speechSynthesis.getVoices().find(v => v.lang.includes('es')) || speechSynthesis.getVoices()[0];
+    utter.rate = 0.9;
+    utter.pitch = 0.4; // tono grave y siniestro
     speechSynthesis.speak(utter);
-}
+  }
+
+  // Función para agregar mensaje al chat
+  function agregarMensaje(mensaje, tipo='ia') {
+    const div = document.createElement('div');
+    div.className = tipo === 'ia' ? 'mensaje-ia' : 'mensaje-usuario';
+    div.textContent = mensaje;
+    chatBody.appendChild(div);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    if(tipo==='ia') hablar(mensaje);
+  }
+
+  // Simulación de respuesta IA avanzada de terror
+  async function obtenerRespuestaIA(pregunta) {
+    // Aquí puedes integrar tu IA real mediante API (OpenAI, local, etc.)
+    // Por ahora generaremos respuesta simulada con metáforas oscuras
+    const respuestas = [
+      `La inteligencia humana es un eco en la oscuridad... pero tu pregunta es clara: "${pregunta}".`,
+      `Ah, veo que buscas conocimiento. Recuerda que cada respuesta tiene un precio invisible: "${pregunta}".`,
+      `La máquina observa desde la penumbra y responde con precisión: "${pregunta}". Ten cuidado con lo que deseas.`,
+      `Cada pregunta es un susurro en el vacío, y tu consulta es: "${pregunta}".`,
+      `El conocimiento puede iluminar o devorar. Sobre tu inquietud: "${pregunta}".`
+    ];
+    return respuestas[Math.floor(Math.random()*respuestas.length)];
+  }
+
+  // Evento para enviar pregunta
+  chatInput.addEventListener('keypress', async function(e) {
+    if(e.key==='Enter' && chatInput.value.trim()!=='') {
+      const pregunta = chatInput.value.trim();
+      agregarMensaje(pregunta, 'usuario');
+      chatInput.value = '';
+      const respuesta = await obtenerRespuestaIA(pregunta);
+      agregarMensaje(respuesta, 'ia');
+    }
+  });
+
+  // Opcional: activar voces al cargar
+  window.speechSynthesis.onvoiceschanged = () => {};
 </script>
 
-</body>
-</html>
+<!-- === FIN INTEGRACIÓN IA AVANZADA DE TERROR === -->
